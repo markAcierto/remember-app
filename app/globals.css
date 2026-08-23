@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --brand-pink: #ff1fa9;
+  --brand-black: #000000;
+  --brand-white: #ffffff;
+  --brand-bronze: #b87333;
+}
+
+body {
+  background-color: var(--brand-white);
+  color: var(--brand-black);
+}
+
+/* Reusable brand primitives, so pages stay consistent without repeating classes everywhere */
+
+.btn-primary {
+  @apply bg-brand-pink text-white font-sans font-medium rounded-full px-5 py-2.5 text-sm active:scale-[0.98] transition;
+}
+
+.btn-secondary {
+  @apply bg-transparent border border-brand-black text-brand-black font-sans font-medium rounded-full px-5 py-2.5 text-sm active:scale-[0.98] transition;
+}
+
+.card {
+  @apply bg-white border border-black/10 rounded-2xl p-4;
+}
+
+.pill {
+  @apply text-xs font-sans px-3 py-1 rounded-full bg-brand-pink/10 text-brand-pink;
+}
+
+.h1-brand {
+  @apply font-display text-3xl leading-tight text-brand-black;
+}
+
+.h2-brand {
+  @apply font-display text-xl leading-tight text-brand-black;
+}
