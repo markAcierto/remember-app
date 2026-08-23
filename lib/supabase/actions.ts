@@ -18,16 +18,24 @@ export async function signInWithPassword(email: string, password: string) {
 
 export async function signUpWithEmail(email: string, password: string) {
   const supabase = createClient();
+
+  // Build the redirect URL from the request headers so it works server-side
+  const { headers } = await import("next/headers");
+  const h = headers();
+  const host = h.get("host") ?? "localhost:3000";
+  const protocol = h.get("x-forwarded-proto") ?? "http";
+  const origin = `${protocol}://${host}`;
+
   const { error } = await supabase.auth.signUp({
     email,
     password,
-    options: { emailRedirectTo: typeof window !== "undefined" ? window.location.origin : undefined },
+    options: { emailRedirectTo: `${origin}/auth/callback` },
   });
   if (error) {
     return { error: error.message };
   }
-  // Supabase may require email confirmation. Redirect to a confirmation page
-  // if the session wasn't created immediately.
+  // Supabase may require email confirmation. If a session was created
+  // immediately (e.g. email confirmation disabled), redirect home.
   const { data } = await supabase.auth.getSession();
   if (data.session) {
     redirect("/");
